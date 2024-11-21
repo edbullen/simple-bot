@@ -1,0 +1,7 @@
+chroma/*
+data/*
+.DS_Store
+.idea/
+.python-version
+llama-cpp-b3600/
+llama.cpp/
