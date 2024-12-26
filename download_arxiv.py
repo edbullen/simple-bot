@@ -16,14 +16,15 @@ DIR = "./data/arxiv/"
 #os.makedirs(save_dir, exist_ok=True)
 
 # Search query (e.g., Computer Science)
-SEARCH_QUERY = "cat:cs.*"  # 'cs' is the category for Computer Science
+SEARCH_QUERY = "cat:cs.AI AND (abstract:machine learning OR abstract:deep learning)"  # 'cs'=Computer Science,
+MAX_DOWNLOAD_RESULTS = 100  # Adjust this for more or fewer results
 
 
 def get_papers(save_dir, search_query):
     # Fetch results (limit to a manageable number)
     search = arxiv.Search(
         query=search_query,
-        max_results=20,  # Adjust this for more or fewer results
+        max_results=MAX_DOWNLOAD_RESULTS,
         sort_by=arxiv.SortCriterion.SubmittedDate
     )
 

@@ -1,7 +1,11 @@
 chroma/*
 data/*
+logs/*
+llama-cpp-b3600/*
+llama.cpp/
 .DS_Store
 .idea/
 .python-version
-llama-cpp-b3600/
-llama.cpp/
+*.pyc
+
+
