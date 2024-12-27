@@ -1,0 +1,11 @@
+#llama-cpp-python==0.2.27
+langchain-community
+langchain-core
+langchain-openai
+langchain-chroma
+#chromadb
+pypdf
+arxiv # for sample data download
+
+
+

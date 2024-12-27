@@ -1,8 +1,79 @@
-# Simple LLM Chatbots
+# Simple LLM Chatbot
 
-## Utils and Helpers
+RAG Chatbot based on [Langchain](https://python.langchain.com/docs/introduction/).  
+Based on Python 3.10  
+First release uses the OpenAI API `ChatOpenAI()` model and [Chroma](https://docs.trychroma.com/docs/overview/introduction) DB as a vector database.
 
-`download_arxiv.py` - download the [arXiv](https://arxiv.org/) papers to a local folder, based on a search-criteria filter.
+### File Structure 
+
+```
+--
+ |
+  -- bot/RagChain.py
+ |
+  -- chroma/<database files>
+ |
+  -- data/<raw PDF data-source>
+ |
+  -- logs/<chatbot logs>
+ |
+  -- templates/<chat template files>
+```
+
+### Running a Bot Instance
+
+Set the OpenAI API Key:
+```
+export OPENAI_API_KEY=<sk-proj-key>
+```
+Instantiate a Bot
+```
+from bot.RagChain import RagChain
+bot = RagChain()
+```
+Refer to the bot instance methods for using the bot, or instead just use the CLI.  Subset of methods:
+```
+load_template()
+query_rag()
+query_chroma()
+```
+
+# Utils and Helpers
+
+### `simplebot.py` CLI  
+
+CLI to populate the vector database, query the vector database and query the RAG chatbot. Usage:
+
+```
+usage: simplebot.py [-h] --mode {load,query,chat} [--query Q_STRING] [--n K_INT]
+
+Simple RAG chatbot: load Embeddings, query Vector DB, query Chat-Bot
+
+options:
+  -h, --help            show this help message and exit
+  --mode {load,query,chat}
+                        Mode: load / query / chat
+  --query Q_STRING      Query string for Vector DB or Chat-Bot
+  --n K_INT             Number of query results, default: 1
+
+```
+
+### Example - run the RAG Chatbot CLI
+
+`python simplebot.py --mode chat --query "What is the difference between an LTSM model and a Transformer model?"`
+```
+The main difference between an LSTM model and a Transformer model is that the Transformer model introduced the
+ self-attention mechanism, which allows the model to process all words in a sequence simultaneously, in parallel, 
+ rather than sequentially. This parallelization dramatically increased training efficiency and speed, enabling 
+ the model to scale effectively to large datasets. Additionally, the self-attention mechanism allowed the Transformer
+ to capture long-range dependencies in text more effectively than LSTMs.
+``` 
+
+# Setup
+
+1. Set the `OPENAI_API_KEY` as an exported shell variable (or associate it with the process running `RagChain.py`).  See *OpenAPI API Access* below for getting an OpenAPI account.
+2. Create the `data` folder and populate it with source data in PDF format.  This is for the RAG expertise to add to the base LLM chabot
+3. Create the `chroma` folder and populate it with embeddings generated from the chunked-up sections of PDFs in the data folder
 
 ### OpenAI API Access
 
@@ -14,6 +85,29 @@ Get an account set up at [platform.openai.com](https://platform.openai.com)
 
 Generate a platform key by going to *settings* (top right in web GUI) -> *API keys* -> *Create New Secret Key*  
 
-## Simple-Bot 1: OpenAI + Chroma RAG ChatBot
+### Download PDFs for processing to `data`
 
-`openai_chroma_rag` - 
+Choose a set of PDFs relevant to the specialist topic for the RAG chatbot.  
+  
+Example: script to download research papers about Machine Learning and AI:  
+`download_arxiv.py` - download the [arXiv](https://arxiv.org/) papers to a local folder, based on a search-criteria filter.
+
+### Populate the Chroma DB from PDFs
+
+The `simplebot.py` CLI can be used to populate the Chroma database in `chroma` from the raw PDF data in `/data`.  
+Run Chroma load:
+```
+python simplebot.py --mode load
+```
+Log output:
+```
+2024-12-27 10:24 INFO: Initialized logging
+2024-12-27 10:24 INFO: Loading PDF documents
+2024-12-27 10:26 INFO: Loaded 1805 PDF pages
+2024-12-27 10:26 INFO: Splitting text into chunks
+2024-12-27 10:26 INFO: Generating embeddings and saving text chunks and embeddings to vector database
+2024-12-27 10:26 INFO: ChromaDB database path: ./chroma
+2024-12-27 10:26 INFO: Deleting previous ChromaDB database
+2024-12-27 10:28 INFO: Saved 10049 embeddings
+
+```

@@ -1,6 +1,7 @@
 chroma/*
 data/*
 logs/*
+scratch/*
 llama-cpp-b3600/*
 llama.cpp/
 .DS_Store
