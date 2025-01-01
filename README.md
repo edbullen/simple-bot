@@ -60,7 +60,9 @@ options:
 
 ### Example - run the RAG Chatbot CLI
 
-`python simplebot.py --mode chat --query "What is the difference between an LTSM model and a Transformer model?"`
+```
+`python simplebot.py --mode chat --query "What is the difference between an LTSM model and a Transformer model?"
+```
 ```
 The main difference between an LSTM model and a Transformer model is that the Transformer model introduced the
  self-attention mechanism, which allows the model to process all words in a sequence simultaneously, in parallel, 
@@ -68,6 +70,31 @@ The main difference between an LSTM model and a Transformer model is that the Tr
  the model to scale effectively to large datasets. Additionally, the self-attention mechanism allowed the Transformer
  to capture long-range dependencies in text more effectively than LSTMs.
 ``` 
+
+### Example - run the Chatbot CLI in "No-RAG" Mode
+
+This bypasses the Chroma DB and just gets the response directly from the LLM.
+```
+python simplebot.py --mode chat --norag --query "What is the difference between an LTSM model and a Transformer model?"
+```
+
+```
+Long Short-Term Memory (LSTM) and Transformer are both popular models used in natural language processing tasks, but they have some key differences:
+
+1. Architecture:
+- LSTM is a type of recurrent neural network (RNN) that is designed to capture long-term dependencies in sequential data. It consists of recurrent units with a gating mechanism that allows it to remember information over long periods of time.
+- Transformer, on the other hand, is a feedforward neural network architecture that does not rely on recurrence or convolution. It uses self-attention mechanisms to capture dependencies between different parts of the input sequence.
+
+2. Performance:
+- Transformers have been shown to outperform LSTMs on many natural language processing tasks, especially on tasks that require capturing long-range dependencies. This is because Transformers are able to process input sequences in parallel, while LSTMs process input sequentially.
+- LSTMs are still widely used and have shown good performance on tasks where sequential modeling is important, such as speech recognition and language modeling.
+
+3. Training:
+- Transformers are easier to train compared to LSTMs, as they do not suffer from vanishing or exploding gradient problems that can often occur in RNNs. Transformers also require less training time due to their parallel processing capabilities.
+- LSTMs can be more challenging to train, especially on tasks that require capturing long-term dependencies, as they can struggle with vanishing gradients and forget important information over time.
+
+In summary, the main differences between LSTM and Transformer models lie in their architecture, performance, and training characteristics. Transformers are generally preferred for tasks that require capturing long-range dependencies and can be easier to train, while LSTMs are still widely used for tasks where sequential modeling is important.
+```
 
 # Setup
 

@@ -216,19 +216,14 @@ class RagChain:
           :formatted_response (str): Formatted response including the generated text and sources.
           :response_text (str): The generated response text.
         """
-        ## must same embedding function as used to populate the embeddings database
-        #embedding_function = self.embeddings
-
-        # Prepare the database
-        #db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
 
         # Retrieving the context from the DB using similarity search
         # results = db.similarity_search_with_relevance_scores(query_text, k=3)
         results, joined_text, tokens = self.query_chroma(query_text, 3)
 
-        # Check if there are any matching results or if the relevance score is too low
-        # if len(results) == 0 or results[0][1] < 0.7:
-        #    print(f"Unable to find matching results.")
+        # Check if there are any matching results
+        if results is None:
+            return None, "No Data Found"
 
         # Combine context from matching documents
         context_text = "\n\n - -\n\n".join([doc.page_content for doc, _score in results])
@@ -271,11 +266,23 @@ class RagChain:
         print(f"Token Count {tokens}")
 
     def run_rag_chat(self, query_string, template="simple_rag_qanda.txt"):
-        """ """
+        """ RAG Query Chat"""
         self.load_template(template)
         # rag_qanda_here
         formatted_response, response_text = self.query_rag(query_string, self.template)
         print(response_text)
+
+    def run_llm_chat(self, query_string):
+        """ Chat directly with the LLM, no context"""
+        # Initialize OpenAI chat model
+        model = ChatOpenAI()
+
+        # Generate response text
+        response_text = model.predict(query_string)
+        print(response_text)
+
+
+
 
 
 

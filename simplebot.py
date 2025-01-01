@@ -27,6 +27,10 @@ if __name__ == '__main__':
     parser.add_argument('--n', dest='k_int', action='store', help='Number of query results, default: 1',
                         default="1",
                         required=False)
+    parser.add_argument('--norag', dest='norag', action='store_true', help='switch off RAG and Vector DB (LLM only)',
+                        default=False,
+                        required=False)
+
     args = vars(parser.parse_args())
 
     if args['mode'] != 'load':
@@ -38,6 +42,10 @@ if __name__ == '__main__':
         bot.run_docs_load(DATA_PATH)
     elif args['mode'] == 'query':
         bot.run_query_db(query_string=args['q_string'], k_int=int(args['k_int']))
-    elif args['mode'] == 'chat':
+    elif args['mode'] == 'chat' and not args['norag']:
         bot.run_rag_chat(query_string=args['q_string'], template="simple_rag_qanda.txt")
+    elif args['mode'] == 'chat' and args['norag']:
+        bot.run_llm_chat(query_string=args['q_string'])
+    else:
+        print("Unknown Option")
 
